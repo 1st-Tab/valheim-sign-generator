@@ -262,7 +262,7 @@
     p.style.textIndent = (core.clampInt(o.indent, 0, 50, 0) + core.clampInt(o.lineIndent, 0, 50, 0)) + 'px';
     q.style.position = 'relative';
     q.style.left = core.clampInt(o.pos, -50, 50, 0) + 'px';
-    q.style.top = -core.clampInt(o.voffset, -100, 100, 0) + 'px';
+    q.style.top = -core.clampInt(o.voffset, -500, 500, 0) + 'px';
     q.style.marginLeft = core.clampInt(o.space, 0, 50, 0) + 'px';
     var lh = core.clampInt(o.lineHeight, 0, 300, 0);
     p.style.lineHeight = lh ? String(1.15 * lh / 100) : '';

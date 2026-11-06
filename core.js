@@ -69,7 +69,7 @@
       if (value) tags += '<' + tag[1] + '=' + value + '>';
     });
     // Confirmed in game: expose vertical baseline offset as an advanced control.
-    var voffset = clampInt(o.voffset, -100, 100, 0);
+    var voffset = clampInt(o.voffset, -500, 500, 0);
     if (voffset) tags += '<voffset=' + voffset + '>';
     var lh = clampInt(o.lineHeight, 0, 300, 0);
     if (lh) tags += '<line-height=' + lh + '%>';
