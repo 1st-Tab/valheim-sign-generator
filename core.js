@@ -68,7 +68,7 @@
       var value = clampInt(o[tag[0]], min, 50, 0);
       if (value) tags += '<' + tag[1] + '=' + value + '>';
     });
-    // Keep voffset available as an advanced control while its in-game effect remains unverified.
+    // Confirmed in game: expose vertical baseline offset as an advanced control.
     var voffset = clampInt(o.voffset, -100, 100, 0);
     if (voffset) tags += '<voffset=' + voffset + '>';
     var lh = clampInt(o.lineHeight, 0, 300, 0);

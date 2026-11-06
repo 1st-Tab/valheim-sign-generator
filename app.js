@@ -418,7 +418,6 @@
 
   // Partial, failed, and unconfirmed results stay visible without being presented as working editor controls.
   var RESEARCH = [
-    ['Partial: voffset appears in preview, not on the sign', '<voffset=100>UP'],
     ['No visible effect reported: width', '<width=50>WIDE'],
     ['No visible effect reported: uppercase', '<uppercase>rune'],
   ];
