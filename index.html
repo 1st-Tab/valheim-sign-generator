@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <title>Valheim Sign Generator</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="core.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div><p class="eyebrow">VALHEIM · SIGN GENERATOR</p><h1>Valheim Sign Generator</h1>
+      <p>Make a sign, preview it, then copy the game-ready text. 50 bytes max.</p></div>
+      <span class="hero-note">No mods needed</span>
+    </header>
+
+    <form id="form" class="layout" autocomplete="off" novalidate>
+      <aside class="tile text-panel" aria-labelledby="t-text">
+        <h2 id="t-text">Text</h2>
+        <label for="text" class="lbl">Sign text <span class="hint">Enter = new line (2 bytes)</span></label>
+        <textarea id="text" rows="5" spellcheck="false"></textarea>
+        <p class="hint">Type or paste any Unicode emoji or symbol here. Unicode glyphs are static; sprite-set frames can animate.</p>
+        <p class="hint input-help"><span><kbd>Win</kbd> + <kbd>.</kbd> Windows</span><span><kbd>Ctrl</kbd> + <kbd>⌘</kbd> + <kbd>Space</kbd> Mac</span><span><kbd>Ctrl</kbd> + <kbd>.</kbd> Linux*</span></p>
+        <p class="hint">*Linux shortcut depends on desktop and browser. Search “Characters” or paste a symbol if it does not open.</p>
+      </aside>
+
+      <article class="controls" aria-label="Sign options">
+
+        <section class="tile" aria-labelledby="t-color">
+          <h2 id="t-color">Color</h2>
+          <div class="group">
+            <label class="switch"><input type="checkbox" id="useColor"> Text color</label>
+            <div class="row">
+              <div class="color-options">
+                <label class="custom-color"><span>Custom</span><input type="color" id="color" value="#fff3d8" aria-label="Custom text color"></label>
+                <div class="preset-colors"><span class="color-caption">Preselection</span><div class="swatches" data-target="color" role="group" aria-label="Preset text colors"></div></div>
+              </div>
+            </div>
+            <div class="field">
+              <label for="alpha" class="lbl">Opacity <output id="alphaOut" for="alpha"></output></label>
+              <input type="range" id="alpha" min="0" max="255" value="255">
+            </div>
+          </div>
+
+          <div class="group">
+            <div class="opt">
+              <label class="switch"><input type="checkbox" id="useMark"> <span class="mark-demo">Highlight</span></label>
+              <details class="help" name="help"><summary aria-label="Help: highlight">?</summary><p>Colored band over the letters (<code>&lt;mark&gt;</code>). It is drawn on top of the text, so it always stays a bit see-through.</p></details>
+            </div>
+            <div class="row">
+              <div class="color-options">
+                <label class="custom-color"><span>Custom</span><input type="color" id="markColor" value="#fff3d8" aria-label="Custom highlight color"></label>
+                <div class="preset-colors"><span class="color-caption">Preselection</span><div class="swatches" data-target="markColor" role="group" aria-label="Preset highlight colors"></div></div>
+              </div>
+            </div>
+            <div class="field">
+              <label for="markAlpha" class="lbl">Opacity <output id="markAlphaOut" for="markAlpha"></output></label>
+              <input type="range" id="markAlpha" min="0" max="254" value="136">
+            </div>
+          </div>
+        </section>
+
+        <section class="tile" aria-labelledby="t-style">
+          <h2 id="t-style">Style</h2>
+          <div class="group"><label for="stylePreset" class="lbl">Valheim text style</label><select id="stylePreset"><option value="">Default</option><option value="H1">H1 · green + *</option><option value="C2">C2 · purple</option></select><p class="hint">Styles set the game color. Custom text color can override them.</p></div>
+          <div class="group">
+            <div class="opt">
+              <label class="switch"><input type="checkbox" id="useSize"> Fixed size</label>
+              <details class="help" name="help"><summary aria-label="Help: size">?</summary><p id="sizeHelp">Off: the sign shrinks the text to fit. On: enter a whole number. Size 300 works in game; larger values can be entered too. The preview shows sizes up to 300, centered over the fixed board; the copied tag keeps the exact value entered.</p></details>
+            </div>
+            <label for="size" class="lbl">Size value</label>
+            <input type="number" id="size" min="1" max="2147483647" step="1" value="10" inputmode="numeric">
+          </div>
+
+          <fieldset class="group chips">
+            <legend class="lbl">Effects</legend>
+            <label class="chip"><input type="checkbox" id="italic"> <i>Italic</i></label>
+            <label class="chip"><input type="checkbox" id="underline"> <u>Underline</u></label>
+            <label class="chip"><input type="checkbox" id="strike"> <s>Strike</s></label>
+            <label class="chip"><input type="checkbox" id="smallcaps"> <span class="sc">Small caps</span></label>
+            <label class="chip"><input type="checkbox" id="monospace"> Monospace</label>
+            <span class="opt inline">
+              <label class="chip"><input type="checkbox" id="bold"> <b>Bold</b></label>
+              <details class="help" name="help"><summary aria-label="Help: bold">?</summary><p>Valid tag, but the sign font is already bold: no visible change in game. Costs 3 bytes.</p></details>
+            </span>
+          </fieldset>
+
+          <fieldset class="group chips">
+            <legend class="lbl">Align</legend>
+            <label class="chip"><input type="radio" name="align" value="" checked> Center</label>
+            <label class="chip"><input type="radio" name="align" value="left"> Left</label>
+            <label class="chip"><input type="radio" name="align" value="right"> Right</label>
+          </fieldset>
+
+          <div class="group sliders">
+            <div class="field">
+              <div class="opt"><label for="cspace" class="lbl">Letter spacing (em) <output id="cspaceOut" for="cspace"></output></label>
+                <details class="help" name="help"><summary aria-label="Help: letter spacing">?</summary><p>Space between letters in em units (<code>&lt;cspace&gt;</code>). Negative values squeeze them together. 0 = off.</p></details></div>
+              <input type="range" id="cspace" min="-20" max="50" value="0">
+            </div>
+            <div class="field">
+              <div class="opt"><label for="lineHeight" class="lbl">Line height <output id="lineHeightOut" for="lineHeight"></output></label>
+                <details class="help" name="help"><summary aria-label="Help: line height">?</summary><p>Gap between lines, in % of normal (<code>&lt;line-height&gt;</code>). Only matters with several lines. 0 = off.</p></details></div>
+              <input type="range" id="lineHeight" min="0" max="300" step="10" value="0">
+            </div>
+            <div class="field">
+              <div class="opt"><label for="rotate" class="lbl">Rotate letters <output id="rotateOut" for="rotate"></output></label>
+                <details class="help" name="help"><summary aria-label="Help: rotate">?</summary><p>Turns each letter on its own center (<code>&lt;rotate&gt;</code>). The line itself stays straight. 0 = off.</p></details></div>
+              <input type="range" id="rotate" min="-180" max="180" value="0">
+            </div>
+          </div>
+          <details class="group advanced">
+            <summary>More <span class="hint">Positioning and less-used text options</span></summary>
+            <label class="chip size-flip"><input type="checkbox" id="flipSize"> Flip size (negative)</label>
+            <div class="sliders">
+              <div class="field"><label for="marginLeft" class="lbl">Left margin <output id="marginLeftOut" for="marginLeft"></output></label><input type="range" id="marginLeft" min="0" max="50" value="0"></div>
+              <div class="field"><label for="marginRight" class="lbl">Right margin <output id="marginRightOut" for="marginRight"></output></label><input type="range" id="marginRight" min="0" max="50" value="0"></div>
+              <div class="field"><label for="supSub" class="lbl">Raise or lower text</label><select id="supSub"><option value="">Off</option><option value="sup">Superscript</option><option value="sub">Subscript</option></select></div>
+              <div class="field"><label for="pos" class="lbl">Position <output id="posOut" for="pos"></output></label><input type="range" id="pos" min="-50" max="50" value="0"><p class="hint">Horizontal offset; negative values move left. Check the result on a sign in game.</p></div>
+              <div class="field"><label for="space" class="lbl">Extra space <output id="spaceOut" for="space"></output></label><input type="range" id="space" min="0" max="50" value="0"></div>
+              <div class="field"><label for="lineIndent" class="lbl">Line indent <output id="lineIndentOut" for="lineIndent"></output></label><input type="range" id="lineIndent" min="0" max="50" value="0"></div>
+              <div class="field"><label for="indent" class="lbl">Indent <output id="indentOut" for="indent"></output></label><input type="range" id="indent" min="0" max="50" value="0"></div>
+            </div>
+          </details>
+        </section>
+
+        <section class="tile" aria-labelledby="t-emoji">
+          <div class="opt">
+            <h2 id="t-emoji">Sprite animation</h2>
+            <details class="help" name="help"><summary aria-label="Help: sprite animation">?</summary><p>Type or paste emoji and symbols in the Text panel. Animation uses consecutive frames from a Valheim sprite set.</p></details>
+          </div>
+          <fieldset class="group chips">
+            <legend class="lbl">Mode</legend>
+            <label class="chip"><input type="radio" name="sprite" value="" checked> Off</label>
+            <label class="chip"><input type="radio" name="sprite" value="anim"> Animated</label>
+          </fieldset>
+          <div id="spriteControls" hidden>
+            <div class="group field">
+              <label for="spriteSet" class="lbl">Sprite set</label>
+              <select id="spriteSet">
+                <option value="emojione" selected>Emoji sprites (16)</option>
+                <option value="xbox">Xbox buttons (36)</option>
+                <option value="ps5">PlayStation buttons (36)</option>
+                <option value="switch2">Switch buttons (26)</option>
+              </select>
+            </div>
+            <div id="spriteTintField" class="group">
+              <label class="switch"><input type="checkbox" id="useSpriteColor"> Tint sprite</label>
+              <label id="spriteColorField" class="custom-color" hidden><span>Custom</span><input type="color" id="spriteColor" value="#00ff00" aria-label="Sprite tint color"></label>
+            </div>
+            <div class="group sliders">
+              <div class="field">
+                <label for="spriteFrom" class="lbl">From</label>
+                <select id="spriteFrom" data-default="0"></select>
+              </div>
+              <div class="field">
+                <label for="spriteTo" class="lbl">To</label>
+                <select id="spriteTo" data-default="1"></select>
+              </div>
+              <div class="field">
+                <div class="opt">
+                  <label for="spriteFps" class="lbl">Speed <output id="spriteFpsOut" for="spriteFps"></output></label>
+                  <details class="help" name="help"><summary aria-label="Help: animation speed">?</summary><p>Choose up to 120 frames per second. TextMesh Pro accepts rates above 30; Valheim can only change frames as often as the game updates. The browser preview is capped at 60 FPS.</p></details>
+                </div>
+                <input type="range" id="spriteFps" min="1" max="120" value="2">
+              </div>
+              <fieldset class="chips bare">
+                <legend class="lbl">Place</legend>
+                <label class="chip"><input type="radio" name="spritePos" value="" checked> Before text</label>
+                <label class="chip"><input type="radio" name="spritePos" value="after"> After text</label>
+              </fieldset>
+            </div>
+            <!-- A second independent loop uses the same tested animation tag format. -->
+            <div class="group">
+              <label class="switch"><input type="checkbox" id="useSprite2"> Add a second animation</label>
+              <div id="sprite2Fields" class="sliders">
+                <div class="field"><label for="sprite2From" class="lbl">Second From</label><select id="sprite2From" data-default="14"></select></div>
+                <div class="field"><label for="sprite2To" class="lbl">Second To</label><select id="sprite2To" data-default="15"></select></div>
+                <div class="field"><label for="sprite2Fps" class="lbl">Second speed <output id="sprite2FpsOut" for="sprite2Fps"></output></label><input type="range" id="sprite2Fps" min="1" max="120" value="5"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Experimental lists partial, failed, and unverified sign results. -->
+        <section class="tile" aria-labelledby="t-research">
+          <div class="opt">
+            <h2 id="t-research">Experimental</h2>
+            <details class="help" name="help"><summary aria-label="Help: experiments">?</summary><p>Confirmed effects are available in the editor above. Notes below list partial results, failed tags, and tests that still need an in-game check.</p></details>
+          </div>
+          <ul id="research" class="lab"></ul>
+        </section>
+      </article>
+
+      <aside class="tile result" aria-labelledby="t-out">
+        <h2 id="t-out">Result</h2>
+        <div class="preview-stage" aria-label="Sign preview"><div class="plank" aria-hidden="true"><span id="preview"></span></div></div>
+        <p class="hint center">Preview is approximate.</p>
+        <label for="output" class="lbl">Paste this into the sign</label>
+        <textarea id="output" rows="3" readonly spellcheck="false"></textarea>
+        <div class="meter" aria-hidden="true"><div id="meterBar"></div></div>
+        <div class="row between">
+          <p id="count" class="count" aria-live="polite"></p>
+          <span class="row actions">
+            <button type="button" id="resetAll" class="btn ghost">Reset all</button>
+            <button type="button" id="copy" class="btn">Copy</button>
+          </span>
+        </div>
+        <p id="limitMsg" class="limit" role="status"></p>
+
+        <div class="group favs">
+          <h3 class="lbl">Favorites <span class="hint">saved in this browser only</span></h3>
+          <div class="row fav-save">
+            <input type="text" id="favName" maxlength="30" placeholder="Name, e.g. Chest sign" aria-label="Favorite name">
+            <button type="button" id="favSave" class="btn ghost">Save</button>
+          </div>
+          <ul id="favList" class="fav-list" aria-label="Saved favorites"></ul>
+        </div>
+      </aside>
+    </form>
+  </main>
+</body>
+</html>
