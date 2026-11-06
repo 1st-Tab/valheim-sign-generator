@@ -8,7 +8,7 @@
   var PRESET_COLORS = ['#fff3d8', '#ffffff', '#ff0000', '#ffaa00', '#ffff00', '#00ff00', '#00ffff', '#4488ff', '#ff00ff', '#000000'];
   var IDS = ['text', 'useColor', 'color', 'alpha', 'useMark', 'markColor', 'markAlpha', 'useSize', 'size', 'stylePreset', 'flipSize',
     'bold', 'italic', 'underline', 'strike', 'smallcaps', 'monospace', 'cspace', 'lineHeight', 'rotate',
-    'marginLeft', 'marginRight', 'supSub', 'pos', 'space', 'lineIndent', 'indent', 'useSpriteColor', 'spriteColor',
+    'marginLeft', 'marginRight', 'supSub', 'pos', 'voffset', 'space', 'lineIndent', 'indent', 'useSpriteColor', 'spriteColor',
     'spriteSet', 'spriteFrom', 'spriteTo', 'spriteFps', 'useSprite2', 'sprite2From', 'sprite2To', 'sprite2Fps', 'research', 'favName', 'favSave', 'favList',
     'preview', 'output', 'count', 'copy', 'limitMsg', 'meterBar'];
   var els = {};
@@ -110,7 +110,7 @@
       align: radio('align'),
       cspace: els.cspace.value, lineHeight: els.lineHeight.value,
       rotate: els.rotate.value, marginLeft: els.marginLeft.value, marginRight: els.marginRight.value,
-      supSub: els.supSub.value, pos: els.pos.value, space: els.space.value, lineIndent: els.lineIndent.value, indent: els.indent.value,
+      supSub: els.supSub.value, pos: els.pos.value, voffset: els.voffset.value, space: els.space.value, lineIndent: els.lineIndent.value, indent: els.indent.value,
       useSpriteColor: els.useSpriteColor.checked, spriteColor: els.spriteColor.value,
       sprite: radio('sprite'), spriteSet: els.spriteSet.value, spriteFrom: els.spriteFrom.value, spriteTo: els.spriteTo.value,
       spriteFps: els.spriteFps.value, spritePos: radio('spritePos'), sprite2: radio('sprite') === 'anim' && els.useSprite2.checked,
@@ -262,6 +262,7 @@
     p.style.textIndent = (core.clampInt(o.indent, 0, 50, 0) + core.clampInt(o.lineIndent, 0, 50, 0)) + 'px';
     q.style.position = 'relative';
     q.style.left = core.clampInt(o.pos, -50, 50, 0) + 'px';
+    q.style.top = -core.clampInt(o.voffset, -100, 100, 0) + 'px';
     q.style.marginLeft = core.clampInt(o.space, 0, 50, 0) + 'px';
     var lh = core.clampInt(o.lineHeight, 0, 300, 0);
     p.style.lineHeight = lh ? String(1.15 * lh / 100) : '';
@@ -291,6 +292,7 @@
     setOut('lineHeight', els.lineHeight.value === '0' ? 'off' : els.lineHeight.value + '%');
     setOut('rotate', els.rotate.value === '0' ? 'off' : els.rotate.value + '°');
     ['marginLeft', 'marginRight', 'pos', 'space', 'lineIndent', 'indent'].forEach(function (id) { setOut(id, els[id].value === '0' ? 'off' : els[id].value); });
+    setOut('voffset', els.voffset.value === '0' ? 'off' : (els.voffset.value > 0 ? '+' : '') + els.voffset.value);
     setOut('spriteFps', els.spriteFps.value + ' fps');
     setOut('sprite2Fps', els.sprite2Fps.value + ' fps');
     relabelSprites();

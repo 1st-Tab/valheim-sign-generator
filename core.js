@@ -68,6 +68,9 @@
       var value = clampInt(o[tag[0]], min, 50, 0);
       if (value) tags += '<' + tag[1] + '=' + value + '>';
     });
+    // Keep voffset available as an advanced control while its in-game effect remains unverified.
+    var voffset = clampInt(o.voffset, -100, 100, 0);
+    if (voffset) tags += '<voffset=' + voffset + '>';
     var lh = clampInt(o.lineHeight, 0, 300, 0);
     if (lh) tags += '<line-height=' + lh + '%>';
     var rot = clampInt(o.rotate, -180, 180, 0);
